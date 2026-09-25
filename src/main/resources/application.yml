@@ -26,6 +26,9 @@ app:
   cache:
     link-ttl: 24h
     missing-ttl: 60s
+  clicks:
+    # How often buffered click counts are written from Redis to PostgreSQL
+    flush-interval: 5s
 
 management:
   endpoints:

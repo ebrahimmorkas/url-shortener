@@ -12,7 +12,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /** Full application against real infrastructure; all subclasses share one context and its containers. */
-@SpringBootTest(properties = "app.base-url=https://sho.rt")
+@SpringBootTest(properties = {
+        "app.base-url=https://sho.rt",
+        // Tests trigger the click flush explicitly
+        "app.clicks.flush-interval=1h"
+})
 @AutoConfigureMockMvc
 @Import(TestcontainersConfiguration.class)
 public abstract class IntegrationTest {

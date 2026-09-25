@@ -1,5 +1,6 @@
 package com.ebrahimmorkas.shortener.link;
 
+import com.ebrahimmorkas.shortener.analytics.ClickCounter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.net.URI;
 public class RedirectController {
 
     private final LinkService linkService;
+    private final ClickCounter clickCounter;
 
     /**
      * 302 (not 301) plus {@code no-store}: browsers must come back through us on every click, so
@@ -26,8 +28,10 @@ public class RedirectController {
     @GetMapping("/{code:[A-Za-z0-9_-]{4,30}}")
     @Operation(summary = "Follow a short link")
     public ResponseEntity<Void> redirect(@PathVariable String code) {
+        String target = linkService.resolve(code);
+        clickCounter.record(code);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(linkService.resolve(code)))
+                .location(URI.create(target))
                 .cacheControl(CacheControl.noStore())
                 .build();
     }
