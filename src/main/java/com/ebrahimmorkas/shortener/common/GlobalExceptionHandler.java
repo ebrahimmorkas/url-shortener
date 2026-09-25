@@ -30,6 +30,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem(HttpStatus.GONE, "Link expired", ex.getMessage());
     }
 
+    @ExceptionHandler(AliasUnavailableException.class)
+    ProblemDetail handleAliasUnavailable(AliasUnavailableException ex) {
+        return problem(HttpStatus.CONFLICT, "Alias unavailable", ex.getMessage());
+    }
+
     @ExceptionHandler(InvalidUrlException.class)
     ProblemDetail handleInvalidUrl(InvalidUrlException ex) {
         return problem(HttpStatus.BAD_REQUEST, "Invalid URL", ex.getMessage());
