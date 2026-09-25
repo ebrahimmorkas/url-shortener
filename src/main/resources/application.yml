@@ -12,10 +12,20 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      # Fail fast so a Redis outage degrades to DB reads instead of stalling redirects
+      timeout: 200ms
+      connect-timeout: 500ms
 
 app:
   # Public origin used to build short URLs; also used to reject links pointing back at ourselves.
   base-url: ${BASE_URL:http://localhost:8080}
+  cache:
+    link-ttl: 24h
+    missing-ttl: 60s
 
 management:
   endpoints:
