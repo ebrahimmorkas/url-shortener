@@ -1,5 +1,6 @@
 package com.ebrahimmorkas.shortener.link;
 
+import com.ebrahimmorkas.shortener.ratelimit.RateLimited;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,7 +24,8 @@ public class LinkController {
     private final LinkService linkService;
 
     @PostMapping
-    @Operation(summary = "Shorten a URL")
+    @RateLimited("create-link")
+    @Operation(summary = "Shorten a URL", description = "Rate limited per client IP (default 20/minute)")
     public ResponseEntity<LinkResponse> create(@Valid @RequestBody CreateLinkRequest request) {
         LinkResponse link = linkService.create(request);
         return ResponseEntity.created(URI.create(link.shortUrl())).body(link);

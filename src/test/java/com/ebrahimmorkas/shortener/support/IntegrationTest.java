@@ -15,7 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {
         "app.base-url=https://sho.rt",
         // Tests trigger the click flush explicitly
-        "app.clicks.flush-interval=1h"
+        "app.clicks.flush-interval=1h",
+        // Functional tests share one client IP; RateLimitIntegrationTest covers limiting with low limits
+        "app.rate-limit.policies.create-link.limit=100000",
+        "app.rate-limit.policies.redirect.limit=100000"
 })
 @AutoConfigureMockMvc
 @Import(TestcontainersConfiguration.class)

@@ -1,6 +1,7 @@
 package com.ebrahimmorkas.shortener.link;
 
 import com.ebrahimmorkas.shortener.analytics.ClickCounter;
+import com.ebrahimmorkas.shortener.ratelimit.RateLimited;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class RedirectController {
      * clicks can be counted and expired links stop working immediately.
      */
     @GetMapping("/{code:[A-Za-z0-9_-]{4,30}}")
+    @RateLimited("redirect")
     @Operation(summary = "Follow a short link")
     public ResponseEntity<Void> redirect(@PathVariable String code) {
         String target = linkService.resolve(code);

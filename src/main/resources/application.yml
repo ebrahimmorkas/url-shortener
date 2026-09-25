@@ -29,6 +29,16 @@ app:
   clicks:
     # How often buffered click counts are written from Redis to PostgreSQL
     flush-interval: 5s
+  rate-limit:
+    enabled: true
+    policies:
+      create-link:
+        limit: ${RATE_LIMIT_CREATE:20}
+        window: 1m
+      # Generous for humans, but slows down bots scanning for valid codes
+      redirect:
+        limit: ${RATE_LIMIT_REDIRECT:600}
+        window: 1m
 
 management:
   endpoints:
