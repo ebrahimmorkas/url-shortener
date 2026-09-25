@@ -4,3 +4,25 @@ server:
 spring:
   application:
     name: url-shortener
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/shortener_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+app:
+  # Public origin used to build short URLs; also used to reject links pointing back at ourselves.
+  base-url: ${BASE_URL:http://localhost:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
