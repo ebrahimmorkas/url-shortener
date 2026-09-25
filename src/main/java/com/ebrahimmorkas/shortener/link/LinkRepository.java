@@ -11,4 +11,6 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
     long nextId();
 
     Optional<Link> findByCode(String code);
+
+    boolean existsByCode(String code);
 }
